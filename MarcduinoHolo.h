@@ -1,9 +1,4 @@
 ////////////////
-MARCDUINO_ACTION(HoloCommandStar, *HP, ({
-    char sHoloCommand[64];
-    snprintf(sHoloCommand, sizeof(sHoloCommand), "HP%s", Marcduino::getCommand());
-    CommandEvent::process(sHoloCommand);
-}))
 
 MARCDUINO_ACTION(FrontHoloOn, *ON01, ({
     // Front Holo Dim cycle random color
@@ -426,6 +421,18 @@ MARCDUINO_ACTION(MDRearHoloOff, @8D, ({
 ////////////////
 
 MARCDUINO_ACTION(HoloCommand, @HP, ({
+    char sHoloCommand[64];
+    snprintf(sHoloCommand, sizeof(sHoloCommand), "HP%s", Marcduino::getCommand());
+    CommandEvent::process(sHoloCommand);
+}))
+
+////////////////
+// Allow holo direct commands via '*' prefix as well.
+// Example from Shadow:
+//   *HPA000|0\r  ->  HP A000|0  -> same as @HPA000|0 previously
+////////////////
+
+MARCDUINO_ACTION(HoloCommandStar, *HP, ({
     char sHoloCommand[64];
     snprintf(sHoloCommand, sizeof(sHoloCommand), "HP%s", Marcduino::getCommand());
     CommandEvent::process(sHoloCommand);
