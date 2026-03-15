@@ -1,4 +1,9 @@
 ////////////////
+MARCDUINO_ACTION(HoloCommandStar, *HP, ({
+    char sHoloCommand[64];
+    snprintf(sHoloCommand, sizeof(sHoloCommand), "HP%s", Marcduino::getCommand());
+    CommandEvent::process(sHoloCommand);
+}))
 
 MARCDUINO_ACTION(FrontHoloOn, *ON01, ({
     // Front Holo Dim cycle random color
