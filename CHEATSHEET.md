@@ -292,10 +292,7 @@ Format: **HP** + designator (**F** Front, **R** Rear, **T** Top, **D** Radar Eye
 
 **Examples:**
 
-- `HPF0013\r` → Front, LED, function 01 (Leia). Result: blue/white. The “3” is ignored.  
-**How the end is parsed:** After `HP` + designator + type, the digits are always: **2 digits** = function (NN): 00, 01, 02…; **optional** next digit = option (C/S/R/P depending on command). Example `HPF0013`: read as **HP** + **F** + **0** + **01** + **3** → Front, LED, function **01** (Leia), option **3**. The "13" is not "option 13": the **1** is the second digit of function **01**, the **3** is the option (and for Leia that option is ignored).
-
-**Examples:**
+- The “3” is ignored.  
 
 - `*HPR0013\r` → Rear, Leia (blue/white). Last digit ignored.  
 - `*HPF001\r` → Front, Leia (same as 0013).  
