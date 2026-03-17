@@ -248,18 +248,41 @@ HP + D + T + NN [+ options] [+ |value]
 
 ---
 
-### 3.2 LED commands (T = 0): HP**D**0**NN**[C][S][R]
+### 3.2 LED effects you can use (holos)
+
+Format: **HP** + designator (**F** Front, **R** Rear, **T** Top, **D** Radar Eye, **A** All) + **0** + **NN** + options.  
+**`*HPR0013`** = Rear holo, effect **01** (Leia). Does what you want (Leia blue/white); the **last digit (3) is ignored** for effect 01.
+
+**Colors (C):** `0` Random, `1` Red, `2` Yellow, `3` Green, `4` Cyan, `5` Blue, `6` Magenta, `7` Orange, `8` Purple, `9` White.
+
+| Code | Effect | Params | Used? | Example |
+|------|--------|--------|-------|---------|
+| **00** | Off | — | — | `HPR0000`, `HPF0000` |
+| **01** | Leia (blue/white, hologram) | 1 digit optional | **Ignored** | `*HPR0013\r`, `*HPF001\r` |
+| **02** | Color Projector (Leia with color) | **C** | Yes | `HPF0023` green, `HPR0025` blue |
+| **03** | Dim Pulse | **C**, **S** (0–9) | Yes | `HPF00335` |
+| **04** | Cycle | **C** | Yes | `HPF0040` = random (`*ON01`) |
+| **05** | Solid color | **C** | Yes | `HPR0051` red |
+| **06** | Rainbow | — | — | `HPF006`, `HPA006` |
+| **07** | Short Circuit | **C** | Yes | `HPF0075` blue |
+| 096–099 | Clear / auto LED state | by command | Yes | See full table below |
+
+**Parsing:** After `HP`+designator+**0** come **2 digits** = function; optional next = param. For **01** that param is **not used**.
+
+---
+
+**Full reference (LED commands):**
 
 | Low-level command | Description |
 |-------------------|-------------|
-| `HPF00` / `HPR00` / `HPT00` / `HPD00` / `HPA00` | No LED function (off / default) |
-| `HPF001` / `HPR001` / … | Leia (random blue/white tones, hologram style). The extra digit is **ignored** — always blue. |
-| `HPF002C` / `HPR002C` / … | Color Projector (Leia-style with color C). |
-| `HPF003CS` / `HPR003CS` / … | Dim Pulse: color **C**, speed **S** (0–9). |
-| `HPF004C` / `HPR004C` / … | Cycle with color **C**. |
+| `HPF00` / `HPR00` / `HPT00` / `HPD00` / `HPA00` | Off |
+| `HPF001` / `HPR001` / `HPF0013` / `HPR0013` / … | Leia. Extra digit **ignored**. |
+| `HPF002C` / `HPR002C` / … | Color Projector: **C**. |
+| `HPF003CS` / `HPR003CS` / … | Dim Pulse: **C**, **S** (0–9). |
+| `HPF004C` / `HPR004C` / … | Cycle: **C**. |
 | `HPF005C` / `HPR005C` / … | Solid color **C**. |
 | `HPF006` / `HPR006` / … | Rainbow. |
-| `HPF007C` / `HPR007C` / … | Short Circuit with color **C**. |
+| `HPF007C` / `HPR007C` / … | Short Circuit: **C**. |
 | `HPF096` / `HPR096` / … | Clear LED, disable auto LED and “Off Color”. |
 | `HPF0971` / `HPR0971` / … | Clear, enable auto LED, default sequences, no “Off Color”. |
 | `HPF0972` / … | Clear, enable auto LED, random sequences, no “Off Color”. |
@@ -272,12 +295,17 @@ HP + D + T + NN [+ options] [+ |value]
 - `HPF0013\r` → Front, LED, function 01 (Leia). Result: blue/white. The “3” is ignored.  
 **How the end is parsed:** After `HP` + designator + type, the digits are always: **2 digits** = function (NN): 00, 01, 02…; **optional** next digit = option (C/S/R/P depending on command). Example `HPF0013`: read as **HP** + **F** + **0** + **01** + **3** → Front, LED, function **01** (Leia), option **3**. The "13" is not "option 13": the **1** is the second digit of function **01**, the **3** is the option (and for Leia that option is ignored).
 
-- `HPR0000\r` → Rear, function 00 (off).  
-- `HPF0040\r` → Front, Cycle with color 0 (Random) — what `*ON01` does.  
-- `HPF0000\r` → Front, off — same as `*OF01`.  
-- `HPA007|25\r` → Rainbow on all 3 holos for 25 s.
+**Examples:**
 
-**Note:** For a hologram-style effect in **green** (or another color), use **HPF0023** (Color Projector with color 3 = Green), not 001.  
+- `*HPR0013\r` → Rear, Leia (blue/white). Last digit ignored.  
+- `*HPF001\r` → Front, Leia (same as 0013).  
+- `HPR0000\r` → Rear, off.  
+- `HPF0023\r` → Front, Color Projector green.  
+- `HPF0040\r` → Front, Cycle random (`*ON01`).  
+- `HPF0000\r` → Front, off (`*OF01`).  
+- `HPA006|25\r` → Rainbow on all 3 holos for 25 s.
+
+**Note:** For hologram-style in **green** (or other color), use **HPF0023** (Color Projector color 3 = Green), not 001.  
 
 ---
 
