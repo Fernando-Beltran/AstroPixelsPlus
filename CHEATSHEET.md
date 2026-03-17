@@ -253,7 +253,7 @@ HP + D + T + NN [+ options] [+ |value]
 | Low-level command | Description |
 |-------------------|-------------|
 | `HPF00` / `HPR00` / `HPT00` / `HPD00` / `HPA00` | No LED function (off / default) |
-| `HPF001` / `HPR001` / … | Leia (blue tones). Optional **C** for color. |
+| `HPF001` / `HPR001` / … | Leia (random blue/white tones, hologram style). The extra digit is **ignored** — always blue. |
 | `HPF002C` / `HPR002C` / … | Color Projector (Leia-style with color C). |
 | `HPF003CS` / `HPR003CS` / … | Dim Pulse: color **C**, speed **S** (0–9). |
 | `HPF004C` / `HPR004C` / … | Cycle with color **C**. |
@@ -269,11 +269,15 @@ HP + D + T + NN [+ options] [+ |value]
 
 **Examples:**
 
-- `HPF0013\r` → Front holo, Leia with color 3 (Green).  
-- `HPR0000\r` → Rear holo, function 00 (off).  
+- `HPF0013\r` → Front, LED, function 01 (Leia). Result: blue/white. The “3” is ignored.  
+**How the end is parsed:** After `HP` + designator + type, the digits are always: **2 digits** = function (NN): 00, 01, 02…; **optional** next digit = option (C/S/R/P depending on command). Example `HPF0013`: read as **HP** + **F** + **0** + **01** + **3** → Front, LED, function **01** (Leia), option **3**. The "13" is not "option 13": the **1** is the second digit of function **01**, the **3** is the option (and for Leia that option is ignored).
+
+- `HPR0000\r` → Rear, function 00 (off).  
 - `HPF0040\r` → Front, Cycle with color 0 (Random) — what `*ON01` does.  
 - `HPF0000\r` → Front, off — same as `*OF01`.  
-- `HPA007|25\r` → Rainbow on all 3 holos for 25 s.  
+- `HPA007|25\r` → Rainbow on all 3 holos for 25 s.
+
+**Note:** For a hologram-style effect in **green** (or another color), use **HPF0023** (Color Projector with color 3 = Green), not 001.  
 
 ---
 
@@ -352,4 +356,4 @@ To send directly over serial: **`*HP`** + rest or **`@HP`** + rest (e.g. `*HPR00
 
 - **Displays:** `@0T` / `@1T` / `@2T` (mode), `@1M` / `@2M` / `@3M` (text), `@1P` / `@2P` / `@3P` (font), `@APLE...` (advanced sequences).
 - **Holos (high-level):** `*ON0n` / `*OF0n` (on/off), `*ST00` (reset), `*HPS30n` (pulse), `*HPS60n` (rainbow), `*RD0n` (random move), `*HPxyz` (position), `*HW0n` (wag), `*HN0n` (nod), `*HRS*` (Radar Eye).
-- **Holos (low-level):** send `*HP` or `@HP` + designator (F/R/T/D/A/…) + type (0=LED, 1=Servo) + NN + options + optional `|seconds`. Examples: `*HPR0013\r`, `*HPF0000\r`, `*HPF1011\r`, `*HPA007|25\r`.
+- **Holos (low-level):** send `*HP` or `@HP` + designator (F/R/T/D/A/…) + type (0=LED, 1=Servo) + NN + options + optional `|seconds`. Parsing: e.g. `HPF0013` = F + 0 + **01** (function) + **3** (option); the "13" is not "option 13". Examples: `*HPR0013\r`, `*HPF0000\r`, `*HPF1011\r`, `*HPA007|25\r`.
