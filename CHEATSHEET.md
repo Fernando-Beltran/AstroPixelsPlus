@@ -258,7 +258,7 @@ Format: **HP** + designator (**F** Front, **R** Rear, **T** Top, **D** Radar Eye
 | Code | Effect | Params | Used? | Example |
 |------|--------|--------|-------|---------|
 | **00** | Off | — | — | `HPR0000`, `HPF0000` |
-| **01** | Leia (blue/white, hologram) | 1 digit optional | **Ignored** | `*HPR0013\r`, `*HPF001\r` |
+| **01** | Leia (blue/white, hologram) | — | Yes |  `*HPF001\r` |
 | **02** | Color Projector (Leia with color) | **C** | Yes | `HPF0023` green, `HPR0025` blue |
 | **03** | Dim Pulse | **C**, **S** (0–9) | Yes | `HPF00335` |
 | **04** | Cycle | **C** | Yes | `HPF0040` = random (`*ON01`) |
