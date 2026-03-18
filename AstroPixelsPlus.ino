@@ -887,6 +887,13 @@ MARCDUINO_ACTION(MDDirectCommand, @AP, ({
 
 ////////////////
 
+MARCDUINO_ACTION(MDDirectCommandStar, *AP, ({
+                     // Direct ReelTwo command via '*' prefix (useful when '@' is stripped upstream)
+                     CommandEvent::process(Marcduino::getCommand());
+                 }))
+
+////////////////
+
 MARCDUINO_ACTION(WifiToggle, #APWIFI, ({
 #ifdef USE_WIFI
                      bool wifiSetting = wifiEnabled;
