@@ -20,6 +20,7 @@
 #endif
 
 // Define USE_I2C_ADDRESS to enable slave mode. This will disable servo support
+ç
 // #define USE_I2C_ADDRESS 0x0a
 #define USE_DEBUG // Define to enable debug diagnostic
 #define USE_WIFI  // Define to enable Wifi support
